@@ -7,5 +7,5 @@
     state: latest
     autoclean: yes
 
-- name: Restart memcached service
-  service: name=memcached state=restarted
+- name: Restart redis service
+  service: name=redis-server state=restarted
