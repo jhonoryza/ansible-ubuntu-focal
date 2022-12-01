@@ -1,5 +1,5 @@
 ---
 
-- include: install_php.yml
+- include_tasks: install_php.yml
 
-- include: configure_php.yml
+- include_tasks: configure_php.yml

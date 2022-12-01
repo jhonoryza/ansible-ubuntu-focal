@@ -1,8 +1,8 @@
 ---
 
-- include: upgrade_packages.yml
+- include_tasks: upgrade_packages.yml
 
-- include: install_essential_packages.yml
+- include_tasks: install_essential_packages.yml
 
-- include: activate_swap.yml
+- include_tasks: activate_swap.yml
   when: (activate_swap_file == "Y" or activate_swap_file == "y")

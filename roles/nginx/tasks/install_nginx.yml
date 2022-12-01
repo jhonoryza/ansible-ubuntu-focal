@@ -3,7 +3,6 @@
 - name: Install nginx
   apt:
     name:
-      - nginx-full
       - nginx
     state: latest
     autoclean: yes

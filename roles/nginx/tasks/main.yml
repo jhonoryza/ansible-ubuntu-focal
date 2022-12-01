@@ -1,8 +1,8 @@
 ---
 
-- include: install_nginx.yml
+- include_tasks: install_nginx.yml
 
-- include: configure_nginx.yml
+- include_tasks: configure_nginx.yml
 
-- include: install_phpmyadmin.yml
+- include_tasks: install_phpmyadmin.yml
   when: (setup_phpmyadmin == "Y" or setup_phpmyadmin == "y")

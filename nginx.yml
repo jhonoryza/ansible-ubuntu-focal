@@ -10,7 +10,7 @@
   vars_prompt:
     - name: "setup_phpmyadmin"
       prompt: "Mau Install phpMyAdmin? (Y/N) "
-      default: "Y"
+      default: "N"
       private: no
   roles:
     - nginx
