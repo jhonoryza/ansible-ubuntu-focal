@@ -1,8 +1,8 @@
 [webservers]
-ip-address       ansible_user=root
+8.219.208.17       ansible_user=root
 
 [dbservers]
-ip-address       ansible_user=root
+8.219.208.17       ansible_user=root
 
 [cacheservers]
-ip-address       ansible_user=root
+8.219.208.17       ansible_user=root
