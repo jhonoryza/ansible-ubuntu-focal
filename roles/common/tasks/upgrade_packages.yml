@@ -5,4 +5,4 @@
     update_cache: "yes"
     force: "yes"
     state: "latest"
-    upgrade: "yes"
+    upgrade: "no"
