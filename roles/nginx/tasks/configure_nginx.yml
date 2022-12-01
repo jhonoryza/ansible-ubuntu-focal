@@ -53,11 +53,11 @@
     dest: /etc/nginx/sites-enabled/default.conf
     state: link
 
-- name: Create symbolic link - sites-enabled/public-ip.conf
-  file:
-    src: ../sites-available/public-ip.conf
-    dest: /etc/nginx/sites-enabled/public-ip.conf
-    state: link
+# - name: Create symbolic link - sites-enabled/public-ip.conf
+#   file:
+#     src: ../sites-available/public-ip.conf
+#     dest: /etc/nginx/sites-enabled/public-ip.conf
+#     state: link
 
 - name: Copy the default html page
   copy:
