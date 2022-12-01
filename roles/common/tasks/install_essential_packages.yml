@@ -1,0 +1,15 @@
+---
+
+- name: Install essential packages
+  apt:
+    name:
+      - mc
+      - wget
+      - vim
+      - git
+      - landscape-common
+      - landscape-client
+      - glances
+      - acl
+    state: latest
+    autoclean: yes

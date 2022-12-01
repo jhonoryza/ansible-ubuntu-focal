@@ -1,0 +1,105 @@
+---
+
+- name: Check all required directories and create them if they are not exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - /etc/nginx/conf.d
+    - /etc/nginx/locations
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+    - /var/log/nginx/sites
+    - /var/www/html
+
+- name: Generate nginx configuration - nginx.conf
+  vars:
+    client_max_body_size: "{{ (max_file_upload_size + 8)|int|abs }}"
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+
+- name: Generate nginx configuration - locations/php-with-cache.conf
+  template: src=locations/php-with-cache.conf.j2 dest=/etc/nginx/locations/php-with-cache.conf
+
+- name: Generate nginx configuration - sites-available/example.conf
+  template: src=sites-available/example.conf.j2 dest=/etc/nginx/sites-available/example.conf
+
+- name: Generate nginx configuration - sites-available/public-ip.conf
+  template: src=sites-available/public-ip.conf.j2 dest=/etc/nginx/sites-available/public-ip.conf
+
+- name: Generate nginx configuration - sites-available/ssl-example.conf
+  template: src=sites-available/ssl-example.conf.j2 dest=/etc/nginx/sites-available/ssl-example.conf
+
+- name: Copy all of the default nginx configuration files
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/nginx/{{ item }}"
+    backup: yes
+    mode: "0644"
+  with_items:
+    - fastcgi.conf
+    - fastcgi_params
+    - robots.txt
+    - locations/default.conf
+    - locations/laravel.conf
+    - locations/native-php.conf
+    - locations/php-no-cache.conf
+    - locations/serverdensity_substatus.conf
+    - sites-available/default.conf
+
+- name: Create symbolic link - sites-enabled/default.conf
+  file:
+    src: ../sites-available/default.conf
+    dest: /etc/nginx/sites-enabled/default.conf
+    state: link
+
+- name: Create symbolic link - sites-enabled/public-ip.conf
+  file:
+    src: ../sites-available/public-ip.conf
+    dest: /etc/nginx/sites-enabled/public-ip.conf
+    state: link
+
+- name: Copy the default html page
+  copy:
+    src: "index.html"
+    dest: "/var/www/html/index.html"
+    mode: "0644"
+    backup: yes
+
+- name: Check if the dhparams.pem file has already exists
+  stat: path=/etc/ssl/dhparams.pem
+  register: dhparams_file
+
+- name: Generate the dhparams file
+  command: openssl dhparam -out /etc/ssl/dhparams.pem 2048
+  when: dhparams_file.stat.exists == false
+
+- name: Create user's www directory
+  file:
+    path: "/home/{{ ansible_user }}/www/public-ip/MySQL_DB"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Check if the sites-enabled/default file exists
+  stat: path=/etc/nginx/sites-enabled/default
+  register: sites_enabled_default
+
+- name: Check if the sites-available/default file exists
+  stat: path=/etc/nginx/sites-available/default
+  register: sites_available_default
+
+- name: Delete /etc/nginx/sites-enabled/default
+  command: unlink /etc/nginx/sites-enabled/default
+  when: sites_enabled_default.stat.exists == true
+
+- name: Delete /etc/nginx/sites-available/default
+  command: rm /etc/nginx/sites-available/default
+  when: sites_available_default.stat.exists == true
+  args:
+    warn: no
+
+- name: Restart nginx service
+  service: name=nginx state=restarted
+

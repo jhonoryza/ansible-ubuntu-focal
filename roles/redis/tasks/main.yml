@@ -1,0 +1,11 @@
+---
+
+- name: Install redis server
+  apt:
+    name:
+      - redis-server
+    state: latest
+    autoclean: yes
+
+- name: Restart memcached service
+  service: name=memcached state=restarted

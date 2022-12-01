@@ -1,0 +1,65 @@
+server {
+    listen 80;
+    server_name www.project.com;
+    return 301 https://www.project.com$request_uri;
+}
+
+server {
+    listen 443;
+
+    root /home/{{ ansible_user }}/www/project;
+    index index.php;
+
+    server_name www.project.com;
+
+    ssl on;
+    ssl_certificate /etc/ssl/project.com/project.com.pem;
+    ssl_certificate_key /etc/ssl/project.com/project.com.key;
+    ssl_trusted_certificate /etc/ssl/project.com/project.com.ca-bundle;
+    ssl_dhparam /etc/ssl/dhparams.pem;
+
+    charset utf-8;
+
+    access_log off;
+    error_log off;
+    #error_log /var/log/nginx/sites/project.error.log;
+    #access_log /var/log/nginx/sites/project.access.log;
+
+    if ($host != 'www.project.com') {
+        return 301 https://www.project.com$request_uri;
+    }
+
+    set $skip_cache 0;
+
+    if ($request_method = POST) {
+        set $skip_cache 1;
+    }     
+
+    if ($query_string != "") {
+        set $skip_cache 1;
+    }
+
+    ##exclude certain urls
+    if ($request_uri ~* "/(secret/login|backend|captcha|elfinder)") {
+        set $skip_cache 1;
+    }
+
+    #add_header Content-Security-Policy "default-src 'self'; font-src data: 'self'; form-action 'self'; frame-ancestors 'self'; frame-src 'self'; img-src data: 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'";
+    add_header Feature-Policy "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'; vibrate 'none'";
+    add_header Referrer-Policy "strict-origin-when-cross-origin";
+    add_header Strict-Transport-Security "max-age=31536000;" always;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-Permitted-Cross-Domain-Policies "none";
+    add_header X-Xss-Protection "1; mode=block";
+
+    #add_header Content-Security-Policy "frame-ancestors https://github.com/ https://twitter.com/;";
+    #add_header Public-Key-Pins 'pin-sha256="pin1"; pin-sha256="pin2"; max-age=2592000;';
+
+    #include /etc/nginx/locations/php-no-cache.conf;
+    include /etc/nginx/locations/php-with-cache.conf;
+    include /etc/nginx/locations/laravel.conf;
+    #include /etc/nginx/locations/native-php.conf;
+    include /etc/nginx/locations/default.conf;
+}
+

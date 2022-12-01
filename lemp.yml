@@ -1,0 +1,7 @@
+---
+
+- include: common.yml
+- include: nginx.yml
+- include: mysql.yml
+- include: redis.yml
+- include: php.yml

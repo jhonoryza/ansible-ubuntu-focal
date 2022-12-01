@@ -1,0 +1,7 @@
+---
+
+- name: Install Redis Server
+  hosts: cacheservers
+  become: yes
+  roles:
+    - redis

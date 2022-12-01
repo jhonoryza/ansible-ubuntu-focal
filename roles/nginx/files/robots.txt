@@ -1,0 +1,8 @@
+User-agent: Facebot
+Disallow:
+
+User-agent: TwitterBot
+Disallow:
+
+User-agent: *
+Disallow: /

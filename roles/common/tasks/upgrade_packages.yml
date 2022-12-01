@@ -1,0 +1,8 @@
+---
+
+- name: Upgrade all existing packages
+  apt:
+    update_cache: "yes"
+    force: "yes"
+    state: "latest"
+    upgrade: "yes"

@@ -1,0 +1,31 @@
+---
+
+- name: Check all required directories and create them if they are not existed
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - /var/log/php8.0-fpm
+
+- name: Generate PHP 8.0 configuration - fpm/php.ini
+  vars:
+    post_max_size: "{{ (max_file_upload_size + 8)|int|abs }}"
+  template: src=fpm/php.ini.j2 dest=/etc/php/8.0/fpm/php.ini
+
+- name: Generate PHP 8.0 configuration - fpm/php-fpm.conf
+  template: src=fpm/php-fpm.conf.j2 dest=/etc/php/8.0/fpm/php-fpm.conf
+
+- name: Generate PHP 8.0 configuration - fpm/pool.d/www.conf
+  vars:
+    fpm_max_children: "{{ (php_fpm_memory_limit / php_fpm_memory_per_process)|int|abs }}"
+    fpm_start_server: "{{ (fpm_max_children|int * 0.4)|int|abs }}"
+    fpm_min_spare_servers: "{{ (fpm_max_children|int * 0.2)|int|abs }}"
+    fpm_max_spare_servers: "{{ (fpm_max_children|int - fpm_start_server|int)|int|abs }}"
+  template: src=fpm/pool.d/www.conf.j2 dest=/etc/php/8.0/fpm/pool.d/www.conf
+
+- name: Generate PHP 8.0 configuration - mods-available/opcache.ini
+  template: src=mods-available/opcache.ini.j2 dest=/etc/php/8.0/mods-available/opcache.ini
+
+- name: Restart php8.0-fpm service
+  service: name=php8.0-fpm state=restarted

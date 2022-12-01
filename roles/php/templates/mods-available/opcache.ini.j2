@@ -1,0 +1,13 @@
+; configuration for php opcache module
+; priority=10
+zend_extension=opcache.so
+opcache.enable=1
+opcache.enable_cli=0
+opcache.memory_consumption={{ php_opcache_memory }}
+opcache.interned_strings_buffer={{ opcache_interned_strings_buffer }}
+opcache.max_accelerated_files={{ php_rlimit_nofile }}
+opcache.validate_timestamps=0
+opcache.revalidate_freq=2592000
+opcache.fast_shutdown=1
+opcache.max_file_size=2M
+

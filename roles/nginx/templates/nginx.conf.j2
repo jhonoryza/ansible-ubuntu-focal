@@ -1,0 +1,113 @@
+user {{ nginx_user }};
+worker_processes auto;
+worker_rlimit_nofile {{ nginx_rlimit_nofile }};
+pid /run/nginx.pid;
+
+events {
+    worker_connections {{ nginx_worker_connections }};
+    use epoll;
+    multi_accept on;
+}
+
+http {
+    ##
+    # Basic Settings
+    ##
+
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 20s;
+    types_hash_max_size 2048;
+    server_tokens off;
+
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_read_timeout {{ max_script_execution_time }};
+    reset_timedout_connection on;
+
+    server_names_hash_bucket_size 64;
+    # server_name_in_redirect off;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    client_max_body_size {{ client_max_body_size }}m;
+    client_body_buffer_size 16k;
+    client_body_timeout 10s;
+    send_timeout 10s;
+
+    client_header_buffer_size 16k;
+    large_client_header_buffers 4 16k;
+    
+    client_header_timeout 6s;
+
+    ##
+    # SSL Settings
+    ##
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_dhparam /etc/ssl/dhparams.pem;
+    ssl_ecdh_curve secp384r1;
+
+    # SSL Ciphers with 100% score
+    # WARNING: This might prevent your clients who are using 
+    # specific devices/browsers, from accessing your website.
+    #ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256: ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES256-GCM-SHA384;
+    #
+    #
+    # SSL Ciphers with 90% score
+    # This should be the best option available for now
+    ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_8_SHA256:TLS_AES_128_CCM_SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+
+    ssl_session_cache   shared:SSL:120m;
+    ssl_session_timeout 2h;
+    ssl_prefer_server_ciphers on;
+    ssl_session_tickets off;
+    #ssl_buffer_size 4k;
+
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 10s;
+
+    ##
+    # Logging Settings
+    ##
+
+    access_log off;
+    error_log /var/log/nginx/error.log;
+
+    ##
+    # Gzip Settings
+    ##
+
+    gzip on;
+    gzip_disable "msie6";
+
+    gzip_min_length 256;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 4 32k;
+    # gzip_http_version 1.1;
+    gzip_types application/atom+xml application/javascript application/x-javascript application/json application/ld+json application/manifest+json application/rss+xml application/xml+rss text/xml application/vnd.geo+json application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/javascript text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
+
+    ##
+    #FastCGI Cache Settings
+    ##
+
+    fastcgi_cache_path /home/{{ ansible_user }}/nginx-cache levels=1:2 keys_zone={{ nginx_cache_name }}:{{ nginx_cache_size }}m inactive=10m;
+    fastcgi_cache_key "$scheme$request_method$host$request_uri";
+    #fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
+    fastcgi_ignore_headers Cache-Control Expires;
+
+
+    ##
+    # Virtual Host Configs
+    ##
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+

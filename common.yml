@@ -1,0 +1,14 @@
+---
+
+- name: Apply common configuration to all servers
+  hosts: all
+  become: yes
+  vars_files:
+    - vars/common.yml
+  vars_prompt:
+    - name: "activate_swap_file"
+      prompt: "Mau mengaktifkan swap? (Y/N) "
+      default: "N"
+      private: no
+  roles:
+    - common

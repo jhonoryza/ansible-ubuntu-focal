@@ -1,0 +1,10 @@
+---
+
+# All of the setting values are in Mega Bytes
+nginx_cache_size: 256
+php_memory_limit: 512
+php_opcache_memory: 128
+php_fpm_memory_limit: 512
+php_fpm_memory_per_process: 40
+mysql_memory_limit: 1024
+

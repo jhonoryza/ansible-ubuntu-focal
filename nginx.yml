@@ -1,0 +1,16 @@
+---
+
+- name: Install nginx and all of it's recommended modules
+  hosts: webservers
+  become: yes
+  vars_files:
+    - vars/allocation.yml
+    - vars/global.yml
+    - vars/nginx.yml
+  vars_prompt:
+    - name: "setup_phpmyadmin"
+      prompt: "Mau Install phpMyAdmin? (Y/N) "
+      default: "Y"
+      private: no
+  roles:
+    - nginx

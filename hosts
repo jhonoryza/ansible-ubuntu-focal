@@ -1,0 +1,8 @@
+[webservers]
+ip-address       ansible_user=root
+
+[dbservers]
+ip-address       ansible_user=root
+
+[cacheservers]
+ip-address       ansible_user=root

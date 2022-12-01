@@ -1,0 +1,24 @@
+---
+
+- name: Download phpMyAdmin 5.0.2
+  get_url:
+    url: "{{ phpmyadmin_download_url }}"
+    dest: "/tmp/phpmyadmin.zip"
+    mode: 0666
+    validate_certs: false
+
+- name: Extract phpMyAdmin 5.0.2 into temporary directory
+  unarchive:
+    src: "/tmp/phpmyadmin.zip"
+    dest: "/tmp/"
+    remote_src: true
+
+- name: Move the phpMyAdmin 5.0.2 files into home directory
+  command: "mv /tmp/phpMyAdmin-5.0.2-all-languages /home/{{ ansible_user }}/www/public-ip/MySQL_DB/phpMyAdmin"
+  args:
+    warn: no
+
+- name: Update phpMyAdmin files and directories ownership
+  command: "chown -R {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/www/public-ip/MySQL_DB"
+  args:
+    warn: no

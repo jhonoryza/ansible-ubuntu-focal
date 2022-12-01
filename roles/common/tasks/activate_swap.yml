@@ -1,0 +1,43 @@
+---
+
+- name: Create the swap file
+  command: /usr/bin/fallocate -l 4096M /swapfile
+
+- name: Modify swap file attributes
+  file: path=/swapfile owner=root group=root mode=0600
+  
+- name: Making the swap space
+  command: mkswap /swapfile
+
+- name: Enabling the swap file
+  command: swapon /swapfile
+
+- name: Checking fstab configuration
+  command: grep "^/swapfile" /etc/fstab
+  register: swap_fstab_check
+  ignore_errors: true
+
+- name: Make the swap permanent, configuring fstab
+  lineinfile: dest=/etc/fstab line="/swapfile       none    swap    sw      0       0 "
+  when: swap_fstab_check.stdout == ""
+
+- name: Checking sysctl configuration (1)
+  shell: grep "^vm.swappiness" /etc/sysctl.conf
+  register: swappiness_sysctl_check
+  ignore_errors: true
+
+- name: Checking sysctl configuration (2)
+  shell: grep "^vm.vfs_cache_pressure" /etc/sysctl.conf
+  register: cache_pressure_sysctl_check
+  ignore_errors: true
+
+- name: Tweak the swap settings (2)
+  lineinfile: dest=/etc/sysctl.conf line="vm.swappiness = 10"
+  when: swappiness_sysctl_check.stdout == ""
+
+- name: Tweak the swap settings (3)
+  command: sysctl vm.vfs_cache_pressure=50
+
+- name: Tweak the swap settings (4)
+  lineinfile: dest=/etc/sysctl.conf line="vm.vfs_cache_pressure = 50"
+  when: cache_pressure_sysctl_check.stdout == ""

@@ -1,0 +1,8 @@
+---
+
+- include: install_nginx.yml
+
+- include: configure_nginx.yml
+
+- include: install_phpmyadmin.yml
+  when: (setup_phpmyadmin == "Y" or setup_phpmyadmin == "y")

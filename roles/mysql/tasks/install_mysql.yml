@@ -1,0 +1,13 @@
+---
+
+- name: Install MySQL 8.0
+  apt:
+    name:
+      - mysql-server-8.0
+      - mysql-server-core-8.0
+      - mysql-client-8.0
+      - mysql-client-core-8.0
+      - libmysqlclient-dev
+      - python3-mysqldb
+    state: latest
+    autoclean: yes

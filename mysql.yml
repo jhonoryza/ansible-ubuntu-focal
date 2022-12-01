@@ -1,0 +1,15 @@
+---
+
+- name: Install & Configure MySQL 8.0
+  hosts: dbservers
+  become: yes
+  vars_files:
+    - vars/allocation.yml
+    - vars/global.yml
+  vars_prompt:
+    - name: "mysql_root_password"
+      prompt: "Masukan MySQL root password "
+      default: "6624031a23536d362ebd785ad90ca7e7"
+      private: no
+  roles:
+    - mysql
