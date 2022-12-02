@@ -1,7 +1,7 @@
 ---
 
-- include: common.yml
-- include: nginx.yml
-- include: mysql.yml
-- include: redis.yml
-- include: php.yml
+- include_tasks: common.yml
+- include_tasks: nginx.yml
+- include_tasks: mysql.yml
+- include_tasks: redis.yml
+- include_tasks: php.yml
