@@ -1,5 +1,19 @@
 ---
 
+- name: Install Software Properties Common
+  apt:
+    name:
+      - software-properties-common
+    state: latest
+    autoclean: yes
+
+- name: Add PHP APT Repository
+  apt_repository: 
+    validate_certs: no
+    repo: 'ppa:ondrej/php'
+    state: present 
+    update_cache: yes
+
 - name: Install PHP 8.0
   apt:
     name:
@@ -10,9 +24,7 @@
       - php8.0-common
       - php8.0-curl
       - php8.0-gd
-      - php8.0-json
       - php8.0-mysql
-      - php8.0-pgsql
       - php8.0-sqlite3
       - php8.0-fpm
       - php8.0-mbstring
@@ -21,9 +33,5 @@
       - php8.0-xml
       - php8.0-zip
       - php8.0-opcache
-      - php-igbinary
-      - php-imagick
-      - php-redis
-      - composer
     state: latest
     autoclean: yes

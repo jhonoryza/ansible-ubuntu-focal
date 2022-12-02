@@ -1,0 +1,13 @@
+---
+
+- name: create installer composer bash script
+  template: src=install-composer.sh.j2 dest=~/install-composer.sh
+
+- name: set script as executable
+  command: chmod +x ~/install-composer.sh
+
+- name: install script
+  command: bash ~/install-composer.sh
+
+- name: install script
+  command: mv composer.phar /usr/bin/composer

@@ -3,3 +3,5 @@
 - include_tasks: install_php.yml
 
 - include_tasks: configure_php.yml
+
+- include_tasks: install_composer.yml
