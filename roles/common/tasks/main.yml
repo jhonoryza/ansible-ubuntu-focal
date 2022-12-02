@@ -1,5 +1,7 @@
 ---
 
+- include_tasks: fix_locale.yml
+
 - include_tasks: upgrade_packages.yml
 
 - include_tasks: install_essential_packages.yml

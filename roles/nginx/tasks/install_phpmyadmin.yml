@@ -14,7 +14,7 @@
     remote_src: true
 
 - name: Move the phpMyAdmin 5.2.0 files into home directory
-  command: "mv /tmp/phpMyAdmin-5.0.2-all-languages /home/{{ ansible_user }}/www/public-ip/MySQL_DB/phpMyAdmin"
+  command: "mv /tmp/phpMyAdmin-5.2.0-english /home/{{ ansible_user }}/www/public-ip/MySQL_DB/phpMyAdmin"
   args:
     warn: no
 
