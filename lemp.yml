@@ -1,9 +1,11 @@
 ---
 
-- hosts: all
-  roles:
-    - common
-    - nginx
-    - mysql
-    - redis
-    - php
+- import_playbook: common.yml
+
+- import_playbook: nginx.yml
+
+- import_playbook: mysql.yml
+
+- import_playbook: redis.yml
+
+- import_playbook: php.yml
