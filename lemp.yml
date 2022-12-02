@@ -1,7 +1,9 @@
 ---
 
-- include_tasks: common.yml
-- include_tasks: nginx.yml
-- include_tasks: mysql.yml
-- include_tasks: redis.yml
-- include_tasks: php.yml
+- hosts: all
+  roles:
+    - common
+    - nginx
+    - mysql
+    - redis
+    - php
