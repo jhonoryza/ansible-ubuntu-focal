@@ -5,4 +5,4 @@ nginx_worker_connections: "8192"
 nginx_rlimit_nofile: "524288"
 nginx_cache_name: "FAST_CGI_CACHE"
 
-phpmyadmin_download_url: "https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.zip"
+phpmyadmin_download_url: "https://files.phpmyadmin.net/phpMyAdmin/5.2.0/phpMyAdmin-5.2.0-english.zip"

@@ -32,4 +32,7 @@ or ``ansible-playbook -i hosts lemp.yml`` untuk install semua role.
 | MySQL      | 8.0     |
 | PHP        | 8.0     |
 | redis      | latest  |
-| phpmyadmin | 5.0.2   |
+| phpmyadmin | 5.2.0   |
+
+## akses phpmyadmin
+buka browser [http://ip-address/MySQL_DB/phpMyAdmin/](http://ip-address/MySQL_DB/phpMyAdmin/)
