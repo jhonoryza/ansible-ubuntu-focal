@@ -3,3 +3,4 @@
 www_username: "www-data"
 config_system_locale: 'en_US.UTF-8'
 config_system_language: 'en_US.UTF-8'
+upgrade_package: 'no'
