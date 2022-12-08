@@ -2,14 +2,14 @@
 
 ## Requirement
 
-* Install ansible di local pc.
-* Update host file : ``/hosts`` ini untuk konfigurasi ip address server yang akan digunakan dan user yg digunakan
-* Update alokasi resource ``vars/allocation.yml`` dan ``vars/global.yml``
+* Install ansible di local pc. [cara install](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
+* Update host file : ``hosts`` ini untuk konfigurasi ip address server yang akan digunakan dan user yg digunakan
 * Tambahkan local's public key ``~/.ssh/id_rsa.pub`` ke dalam remote server's di folder: ``~/.ssh/authorized_keys``
-* Jalankan command di remote server : ``sudo apt-get install python3-minimal aptitude python-apt``
+* Update variable yang terdapat di folder vars jika diperlukan.
 
 ## Cara Pakai
 
+run command di local:
 ``ansible-playbook -i hosts <role>.yml``
 
 Kumpulan list role yang bisa digunakan :
@@ -21,7 +21,6 @@ Kumpulan list role yang bisa digunakan :
 
 contoh:
 ``ansible-playbook -i hosts nginx.yml``
-
 or ``ansible-playbook -i hosts lemp.yml`` untuk install semua role.
 
 ## Versi yang Terinstall
@@ -33,6 +32,10 @@ or ``ansible-playbook -i hosts lemp.yml`` untuk install semua role.
 | PHP        | 8.0     |
 | redis      | latest  |
 | phpmyadmin | 5.2.0   |
+| phpmyadmin | latest   |
 
 ## akses phpmyadmin
-buka browser [http://ip-address/MySQL_DB/phpMyAdmin/](http://ip-address/MySQL_DB/phpMyAdmin/)
+buka browser [http://ip-address/phpmyadmin](http://ip-address/phpmyadmin)
+
+## akses adminer
+buka browser [http://ip-address/adminer](http://ip-address/adminer)
