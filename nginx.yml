@@ -12,7 +12,6 @@
       prompt: "Mau Install phpMyAdmin? (Y/N) "
       default: "N"
       private: no
-  vars_prompt:
     - name: "setup_adminer"
       prompt: "Mau Install adminer? (Y/N) "
       default: "N"
