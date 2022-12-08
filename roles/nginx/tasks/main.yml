@@ -6,3 +6,6 @@
 
 - include_tasks: install_phpmyadmin.yml
   when: (setup_phpmyadmin == "Y" or setup_phpmyadmin == "y")
+
+- include_tasks: install_adminer.yml
+  when: (setup_adminer == "Y" or setup_adminer == "y")

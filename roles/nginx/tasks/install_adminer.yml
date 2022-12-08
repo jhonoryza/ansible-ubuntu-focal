@@ -1,0 +1,18 @@
+---
+
+- name: Update adminer directories
+  command: "sudo -u{{ ansible_user}} mkdir -p /home/{{ ansible_user }}/www/public-ip/adminer"
+  args:
+    warn: no
+
+- name: Download latest adminer
+  get_url:
+    url: "https://www.adminer.org/latest.php"
+    dest: "/tmp/index.php"
+    mode: 0666
+    validate_certs: false
+
+- name: Move the adminer files into home directory
+  command: "mv /tmp/index.php /home/{{ ansible_user }}/www/public-ip/adminer/index.php"
+  args:
+    warn: no
